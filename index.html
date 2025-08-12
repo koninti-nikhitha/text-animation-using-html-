@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cool Text Animations — HTML & CSS</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#7c3aed;
+      --glass: rgba(255,255,255,0.03);
+      --mono: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue';
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--mono);
+      background:linear-gradient(180deg,#071028 0%, var(--bg) 60%);
+      color:#e6eef8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+    }
+
+    .wrap{
+      width:1100px;
+      max-width:96vw;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:16px;
+      padding:28px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.7);
+      display:grid;
+      grid-template-columns: repeat(2,1fr);
+      gap:20px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:20px;
+      min-height:120px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:12px;
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    h1{font-size:14px;margin:0;color:rgba(255,255,255,0.7)}
+    p.small{font-size:12px;margin:0;color:rgba(255,255,255,0.45)}
+
+    /* ---------- Neon Glow ---------- */
+    .neon{
+      font-weight:800;
+      font-size:46px;
+      letter-spacing:2px;
+      color:#fff;
+      text-transform:uppercase;
+      text-shadow:
+        0 0 6px rgba(124,58,237,0.6),
+        0 0 16px rgba(124,58,237,0.35),
+        0 8px 30px rgba(0,0,0,0.6);
+      position:relative;
+    }
+    .neon::after{
+      content:'';
+      position:absolute; inset:0; z-index:-1; filter:blur(28px);
+      background:linear-gradient(90deg,#7c3aed33,#06b6d433 40%, #7c3aed22);
+      mix-blend-mode:screen; opacity:0.9;
+    }
+
+    /* ---------- Gradient Slide (background-clip) ---------- */
+    .grad {
+      font-weight:700; font-size:40px; letter-spacing:1px;
+      background:linear-gradient(90deg,#ff7ab6,#ffb86b,#7c3aed,#06b6d4);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      animation: slideGrad 4s linear infinite;
+      background-size:300% 100%;
+    }
+    @keyframes slideGrad{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    /* ---------- Typing + Caret ---------- */
+    .typewriter{
+      font-family:monospace;
+      font-size:28px; width:100%; max-width:520px; white-space:nowrap; overflow:hidden;
+      border-right: 3px solid rgba(255,255,255,0.15);
+      animation: typing 3.6s steps(28,end) 1s 1 normal both, blinkCaret .6s steps(1) infinite;
+    }
+    @keyframes typing{from{width:0} to{width:100%}}
+    @keyframes blinkCaret{50%{border-color:transparent}}
+
+    /* ---------- Glitch ---------- */
+    .glitch{
+      font-size:38px; font-weight:800; position:relative; letter-spacing:1px;
+      color:#fff;
+    }
+    .glitch::before, .glitch::after{
+      content:attr(data-text);
+      position:absolute; left:0; top:0; width:100%;
+      opacity:0.8; clip-path: inset(0 0 0 0);
+    }
+    .glitch::before{color:#ff3c78; transform:translate(2px,-2px); mix-blend-mode:screen; animation:glitchTop .7s infinite linear}
+    .glitch::after{color:#00e5ff; transform:translate(-2px,2px); mix-blend-mode:screen; animation:glitchBot .9s infinite linear}
+    @keyframes glitchTop{0%{transform:translate(2px,-2px)}20%{transform:translate(-2px,-4px)}40%{transform:translate(4px,0)}60%{transform:translate(-1px,2px)}80%{transform:translate(2px,-1px)}100%{transform:translate(2px,-2px)}}
+    @keyframes glitchBot{0%{transform:translate(-2px,2px)}25%{transform:translate(1px,3px)}50%{transform:translate(-3px,-1px)}75%{transform:translate(2px,1px)}100%{transform:translate(-2px,2px)}}
+
+    /* ---------- Wave (per-letter) ---------- */
+    .wave{font-size:34px;font-weight:700;display:inline-block}
+    .wave span{display:inline-block; transform-origin:bottom center; animation:wave 1.2s ease-in-out infinite;}
+    .wave span:nth-child(odd){animation-delay: calc(var(--i) * 0.06s)}
+    .wave span:nth-child(even){animation-delay: calc(var(--i) * 0.03s)}
+    @keyframes wave{0%{transform:translateY(0)}50%{transform:translateY(-12px) rotate(-2deg)}100%{transform:translateY(0)}}
+
+    /* ---------- Outline / Fill flip ---------- */
+    .outline{
+      font-size:36px; font-weight:900; letter-spacing:1px;
+      color:transparent; -webkit-text-stroke:1px #fff; position:relative;
+    }
+    .outline::after{
+      content:attr(data-text);
+      position:absolute; inset:0; color:var(--accent); clip-path: inset(0 100% 0 0);
+      animation:reveal 2.4s ease-in-out infinite;
+      -webkit-text-stroke:0;
+    }
+    @keyframes reveal{0%{clip-path: inset(0 100% 0 0)}50%{clip-path: inset(0 0% 0 0)}100%{clip-path: inset(0 100% 0 0)}}
+
+    /* Layout small tweaks */
+    .controls{position:absolute;right:12px;top:12px;font-size:12px;color:rgba(255,255,255,0.5)}
+    footer{grid-column:1/-1;text-align:center;color:rgba(255,255,255,0.45);font-size:13px;padding-top:6px}
+
+    @media (max-width:720px){
+      .wrap{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Neon Glow</h1>
+      <div class="neon">Neon Pulse</div>
+      <p class="small">Soft glow with layered blur</p>
+    </div>
+
+    <div class="card">
+      <h1>Gradient Slide</h1>
+      <div class="grad">Chromatic Motion</div>
+      <p class="small">Text is clipped to an animated gradient</p>
+    </div>
+
+    <div class="card">
+      <h1>Typewriter</h1>
+      <div class="typewriter">Typing effect — made with CSS steps()</div>
+      <p class="small">No JavaScript required</p>
+    </div>
+
+    <div class="card">
+      <h1>Glitch</h1>
+      <div class="glitch" data-text="GLITCH">GLITCH</div>
+      <p class="small">RGB split + jittering layers</p>
+    </div>
+
+    <div class="card">
+      <h1>Wave</h1>
+      <div class="wave" id="wave">Wave Rider</div>
+      <p class="small">Each letter bobs up & down — wrapper script adds spans</p>
+    </div>
+
+    <div class="card">
+      <h1>Outline Fill Reveal</h1>
+      <div class="outline" data-text="REVEAL">REVEAL</div>
+      <p class="small">Stroke + animated color fill</p>
+    </div>
+
+    <footer>Tip: open this file in a browser to preview. Want one effect as a standalone snippet or a different color palette?</footer>
+  </div>
+
+  <script>
+    // small helper: wrap letters with spans and set CSS var for stagger
+    (function(){
+      const w = document.getElementById('wave');
+      const txt = w.textContent.trim();
+      w.innerHTML = '';
+      for(let i=0;i<txt.length;i++){
+        const ch = txt[i] === ' ' ? '\u00A0' : txt[i];
+        const span = document.createElement('span');
+        span.textContent = ch;
+        span.style.setProperty('--i', i);
+        w.appendChild(span);
+      }
+    })();
+  </script>
+</body>
+</html>
